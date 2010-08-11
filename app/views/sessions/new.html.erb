@@ -1,0 +1,18 @@
+<div class = 'sign_in round' >
+  <p style='text-align:left; font-size:160%;'>A promise is a promise</p>
+  <% form_for(:session, :url => sessions_path) do |f| %>
+    <div>
+      <%= f.label "Student ID" %>
+      <%= f.text_field :school_id %>
+    </div>
+    <div>
+      <%= f.label :password %>
+      <%= f.password_field :password %>
+    </div>
+    <div>
+      <%= f.submit "Sign in" %>
+    </div>
+  <% end %>
+
+  <p style='font-size:50%;'>New user? <%= link_to "Sign up now!", signup_path %></p>
+</div>

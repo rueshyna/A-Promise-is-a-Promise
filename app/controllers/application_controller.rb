@@ -2,9 +2,17 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  before_filter :set_charset
+
   helper :all # include all helpers, all the time
+  include SessionsHelper
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
+   filter_parameter_logging :password
+
+  private
+    def set_charset
+     headers['Content-Type'] = "text/html; charset=utf-8"
+    end
 end
