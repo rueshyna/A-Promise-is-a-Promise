@@ -5,34 +5,38 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>A promise is a promise | <%= @title %></title>
     <%= render 'layouts/stylesheets'%>
+    <style type="text/css">
+      A:link {color: #666666}
+      A:visited {color: #666666}
+      A:active {color: #CCCCCC}
+      A:hover {color: #CCCCCC}
+    </style>
   </head>
   <body>
     <div>
     <% if signed_in? %>
       <%= render 'layouts/header'%>
-      <div id='content'>
-        <%= render 'layouts/right'%>
+      <div class='column'>
         <%= render 'layouts/left'%>
+        <%= render 'layouts/right'%>
       </div>
-      <div>
+      <div class = 'content'>
         <% flash.each do |key, value| %>
-        <div><%= value %></div>
+           <div class = '<%= key %>'><%= value %></div>
         <% end %>
         <%= yield %>
-      </div>
-      <%= render 'layouts/footer'%>
+       </div>
+       <%= render 'layouts/footer'%>
 
      <% else %>
-
        <div>
          <% flash.each do |key, value| %>
-         <div><%= value %></div>
+         <div class = 'round <%= key %>'><%= value %></div>
          <% end %>
-         <%= yield %>
        </div>
-      <%= debug(params) if Rails.env.development? %>
-
+       <%= yield %>
      <% end %>
+     <%= debug(params) if Rails.env.development? %>
     </div>
   </body>
 </html>

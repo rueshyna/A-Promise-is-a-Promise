@@ -1,4 +1,11 @@
 class UsersController < ApplicationController
+  before_filter :authenticate, :only => [:edit, :update, :show, :index]
+  before_filter :correct_user, :only => [:edit, :update, :show]
+
+  def index
+    @title = "All users"
+    @users = User.all
+  end
 
   # GET /users/1
   # GET /users/1.xml
@@ -10,13 +17,17 @@ class UsersController < ApplicationController
   # GET /users/new
   # GET /users/new.xml
   def new
-    @user = User.new
-    @title = "Sign up"
+    if !signed_in?
+      @user = User.new
+      @title = "Sign up"
+    else
+      redirect_to root_path
+    end
   end
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @title= "Edit user"
   end
 
   # POST /users
@@ -36,7 +47,13 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    @user = User.find(params[:id])
+    if @user.update_attributes(params[:user])
+      flash[:success] = "Profile updated."
+      redirect_to @user
+    else
+      @title = "Edit user"
+      render 'edit'
+    end
   end
 
   # DELETE /users/1
@@ -44,4 +61,15 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
   end
+
+  private
+
+    def authenticate
+      deny_access unless signed_in?
+    end
+
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_path) unless current_user?(@user)
+    end
 end

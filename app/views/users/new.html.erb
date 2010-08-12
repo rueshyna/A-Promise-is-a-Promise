@@ -1,29 +1,30 @@
-<h2>Sign up</h2>
+<div class = 'sign_up_title round'>Sign up</div>
 
-<% form_for(@user) do |f| %>
-  <%= f.error_messages%>
-  <div>
-    <%= f.label :school_id %><br />
-    <%= f.text_field :school_id %>
-  </div>
-  <div>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div>
-    <%= f.label :email %><br />
-    <%= f.text_field :email %>
-  </div>
-  <div>
-    <%= f.label :password %><br />
-    <%= f.password_field :password %>
-  </div>
-  <div>
-    <%= f.label :password_confirmation, "Confirmation" %><br />
-    <%= f.password_field :password_confirmation %>
-  </div>
-  <div>
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
+<div class = 'sign_up round'>
+  <% form_for(@user) do |f| %>
+    <%= f.error_messages%>
+    <div>
+       <%= f.label :school_id, "Student ID" %><br />
+       <%= f.text_field :school_id %>
+    </div>
+    <div>
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </div>
+    <div>
+      <%= f.label :email %><br />
+      <%= f.text_field :email %>
+    </div>
+    <div>
+      <%= f.label :password %><br />
+      <%= f.password_field :password %>
+    </div>
+    <div>
+      <%= f.label :password_confirmation, "Password Confirmation" %><br />
+      <%= f.password_field :password_confirmation %>
+    </div>
+    <div>
+      <%= f.submit "Sign up" %>
+    </div>
+  <% end %>
+</div>

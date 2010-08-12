@@ -1,18 +1,7 @@
-<p>
-  <b>School id:</b>
-  <%=h @user.school_id %>
-</p>
+<h3>calandar in this page</h3>
 
-<p>
-  <b>Name:</b>
-  <%=h @user.name %>
-</p>
+<h3>
+  <b>School Id: <%=h @user.school_id %></b><br/>
+  <b>Name:<%=h @user.name %></b>
+</h3>
 
-<p>
-  <b>Email:</b>
-  <%=h @user.email %>
-</p>
-
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
