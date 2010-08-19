@@ -1,10 +1,15 @@
+.main{
+  margin : 10px;
+  width: 100%;
+  min-height: 370px;
+}
 .sign_in{
   border : thin solid #707070;
   margin : 100px  auto auto auto;
   display : block;
   text-align: right;
   line-height : center;
-  width : 40%;
+  width : 41%;
   height : 40%;
   color : #707070;
   font-size: 150%;

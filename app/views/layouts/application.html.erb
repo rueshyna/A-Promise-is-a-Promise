@@ -24,10 +24,11 @@
         <% flash.each do |key, value| %>
            <div class = '<%= key %>'><%= value %></div>
         <% end %>
-        <%= yield %>
+          <div class = 'main'>
+            <%= yield %>
+          </div>
        </div>
        <%= render 'layouts/footer'%>
-
      <% else %>
        <div>
          <% flash.each do |key, value| %>
