@@ -13,6 +13,6 @@ class ApplicationController < ActionController::Base
 
   private
     def set_charset
-     headers['Content-Type'] = "text/html; charset=utf-8"
+      headers['Content-Type'] = "text/html; charset=utf-8"
     end
 end

@@ -3,6 +3,11 @@
   width: 100%;
   min-height: 370px;
 }
+
+h1{
+  color: #707070;
+}
+
 .sign_in{
   border : thin solid #707070;
   margin : 100px  auto auto auto;
@@ -50,7 +55,6 @@
 
 .edit{
   padding : 20px;
-  margin : 20px;
   padding-top : 10px;
 }
 
@@ -113,10 +117,11 @@ body {
 #navi {
   width: 180px;
   float: left;
-  font-size: 14pt;
+  font-size: 18pt;
 }
 
 #navi p {
+  letter-spacing:100%;
   margin-bottom:1px;
   margin-top:1px;
   border-bottom: 1px solid #CCCCCC;
@@ -127,7 +132,7 @@ body {
 }
 
 .profile{
-  background-color : #F08080;
+  background-color : #FAFAD2;
   padding: 10%;
   margin: 10px  0px;
   font-size: 1cm;
@@ -247,4 +252,11 @@ h2{
   border : 4px solid;
   padding : 4px;
   font-weight: bold;
+}
+
+#calendar{
+  clear : both;
+  display: inline-block;
+  padding : 20px;
+  padding-top : 10px;
 }

@@ -1,0 +1,73 @@
+<h1>Do promise</h1>
+
+<div id='dialogs' title="Basic dialog">
+   <% form_for @promise do |f|%>
+   <p><%= f.label :when %><br/>
+        <%= f.text_field :when%></p>
+     <p><%= f.label :howlong %><br/>
+        <%= f.text_field :howlong%></p>
+     <p><%= f.submit "OK"%></p>
+   <%end%>
+</div>
+
+<div id='dialog' title="Basic dialog">
+
+        <p class="validateTips">All form fields are required.</p>
+
+        <form>
+        <fieldset>
+                <label for="when">When</label>
+                <input type="text" name="when" id="when" value="" class="text ui-widget-content ui-corner-all" />
+        </fieldset>
+        </form>
+</div>
+
+<div id='calendar'></div>
+
+<% content_for :js_ready do %>
+
+  var when = $("#when"),
+      allFields = $([]).add(when);
+  $('#dialog').dialog({autoOpen: false});
+
+  var calendar = $('#calendar').fullCalendar({
+    header:{
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay'
+    },
+    selectable: true,
+    selectHelper: true,
+    select:
+      function(start, end, allDay){
+        $('#dialog').dialog('open');
+        $('#dialog').dialog({
+           height: 300,
+           width: 400,
+           modal: true,
+           buttons: {
+             'OK': function() {
+               if (when.val()) {
+                 calendar.fullCalendar('renderEvent',{
+                   title: when.val(),
+                   start: start,
+                   end: end,
+                   allDay: allDay
+                 },
+                 true);
+               }
+               $(this).dialog('close');
+             },
+             Cancel: function() {
+               $(this).dialog('close');
+             }
+           },
+           close: function() {
+             allFields.val('').removeClass('ui-state-error');
+           }
+        });
+        calendar.fullCalendar('unselect');
+      },
+    editable: true
+  });
+<% end %>

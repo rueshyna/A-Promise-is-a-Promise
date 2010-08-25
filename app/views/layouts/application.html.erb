@@ -5,6 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>A promise is a promise | <%= @title %></title>
     <%= render 'layouts/stylesheets'%>
+    <%= render 'layouts/javascripts'%>
+    <% javascript_tag do %>
+     $(document).ready(function(){
+       <%= yield :js_ready %>
+     });
+    <% end %>
     <style type="text/css">
       A:link {color: #666666}
       A:visited {color: #666666}
@@ -41,3 +47,5 @@
     </div>
   </body>
 </html>
+
+

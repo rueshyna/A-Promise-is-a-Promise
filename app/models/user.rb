@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100810094558
+# Schema version: 20100821113158
 #
 # Table name: users
 #
@@ -11,6 +11,8 @@
 #  updated_at         :datetime
 #  encrypted_password :string(255)
 #  salt               :string(255)
+#  remember_token     :string(255)
+#  admin              :boolean
 #
 
 class User < ActiveRecord::Base
@@ -18,6 +20,8 @@ class User < ActiveRecord::Base
 
   attr_accessor :password
   attr_accessible :school_id, :name, :email, :password, :password_confirmation
+
+  has_many :promise
 
   validates_presence_of :school_id, :name, :email
   validates_length_of :school_id, :maximum => 10

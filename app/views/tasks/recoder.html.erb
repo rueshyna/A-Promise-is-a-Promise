@@ -1,0 +1,15 @@
+<% content_for :js_ready do %>
+jQuery(function($){
+  $(".target1").click(function(){
+    $.getJSON("/test" , {
+      "name" : "qwert",
+      "what" : "hello_world"
+    } , function(json){
+      for(i=0;i<json.length;i++)
+      $(".target2").append("(" + i + ")" + json[i] + "<br/>");
+    })
+  })
+})
+<% end %>
+<span class="target1">click_me!</span>
+<span class="target2"></span>

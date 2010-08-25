@@ -9,7 +9,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100812155657) do
+ActiveRecord::Schema.define(:version => 20100821120230) do
+
+  create_table "promises", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "question_id"
+    t.string   "when"
+    t.integer  "howlong"
+    t.boolean  "check"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "questions", :force => true do |t|
+    t.string   "question"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.integer  "school_id"
