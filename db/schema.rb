@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100821120230) do
+ActiveRecord::Schema.define(:version => 20100830064335) do
 
   create_table "promises", :force => true do |t|
     t.integer  "user_id"
@@ -19,6 +19,10 @@ ActiveRecord::Schema.define(:version => 20100821120230) do
     t.boolean  "check"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "title"
+    t.string   "start"
+    t.string   "end"
+    t.boolean  "allDay"
   end
 
   create_table "questions", :force => true do |t|

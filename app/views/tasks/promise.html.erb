@@ -1,25 +1,18 @@
 <h1>Do promise</h1>
 
-<div id='dialogs' title="Basic dialog">
-   <% form_for @promise do |f|%>
-   <p><%= f.label :when %><br/>
-        <%= f.text_field :when%></p>
-     <p><%= f.label :howlong %><br/>
-        <%= f.text_field :howlong%></p>
-     <p><%= f.submit "OK"%></p>
-   <%end%>
-</div>
-
-<div id='dialog' title="Basic dialog">
-
-        <p class="validateTips">All form fields are required.</p>
-
-        <form>
-        <fieldset>
-                <label for="when">When</label>
-                <input type="text" name="when" id="when" value="" class="text ui-widget-content ui-corner-all" />
-        </fieldset>
-        </form>
+<div id='dialog' title="Do promise">
+  <form>
+  <fieldset>
+    <p><label for="goal">Your Goal is...</label></p>
+    <p><input type="text" name="goal" id="goal" value="" class="text ui-widget-content ui-corner-all" /></p>
+    <p><label for="when">When?</label></p>
+    <p><input type="radio" name="when" id="when" value="Morning" class="text ui-widget-content ui-corner-all" />Morning
+    <input type="radio" name="when" id="when" value="Afternoon" class="text ui-widget-content ui-corner-all" />Afternoon
+    <input type="radio" name="when" id="when" value="Evening" class="text ui-widget-content ui-corner-all" />Evening</p>
+    <p><label for="howlong">How Long?</label></p>
+    <p><input type="text" name="howlong" id="howlong" value="" class="text ui-widget-content ui-corner-all" />Minutes</p>
+  </fieldset>
+  </form>
 </div>
 
 <div id='calendar'></div>
@@ -27,7 +20,9 @@
 <% content_for :js_ready do %>
 
   var when = $("#when"),
-      allFields = $([]).add(when);
+      goal = $("#goal"),
+      howlong = $("#howlong"),
+      allFields = $([]).add(when).add(goal).add(howlong);
   $('#dialog').dialog({autoOpen: false});
 
   var calendar = $('#calendar').fullCalendar({
@@ -42,23 +37,33 @@
       function(start, end, allDay){
         $('#dialog').dialog('open');
         $('#dialog').dialog({
-           height: 300,
+           height: 420,
            width: 400,
            modal: true,
            buttons: {
-             'OK': function() {
-               if (when.val()) {
-                 calendar.fullCalendar('renderEvent',{
-                   title: when.val(),
-                   start: start,
-                   end: end,
-                   allDay: allDay
-                 },
-                 true);
-               }
+             Cancel: function() {
                $(this).dialog('close');
              },
-             Cancel: function() {
+             'OK': function(){
+               if (goal.val()){
+                 $.getJSON("/dopromise" , {
+                   "title" : goal.val(),
+                   "when" : when.val(),
+                   "howlong" : howlong.val(),
+                   "start" : start+"",
+                   "end" : end+"",
+                   "allDay" : allDay
+                 },function(json){
+                  calendar.fullCalendar('renderEvent',{
+                    id:json[0],
+                    title: json[1],
+                    start: json[2],
+                    end: json[3],
+                    allDay: json[4]
+                  },
+                  false);
+                })
+               }
                $(this).dialog('close');
              }
            },
@@ -68,6 +73,10 @@
         });
         calendar.fullCalendar('unselect');
       },
-    editable: true
+      events:"/loadpromise",
+      eventClick: function(calEvent, jsEvent, view){
+        $(this).css('border-color', 'red');
+      }
+
   });
 <% end %>

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100821120230
+# Schema version: 20100830064335
 #
 # Table name: promises
 #
@@ -11,8 +11,11 @@
 #  check       :boolean
 #  created_at  :datetime
 #  updated_at  :datetime
+#  title       :string(255)
+#  start       :string(255)
+#  end         :string(255)
 #
 
 class Promise < ActiveRecord::Base
-   attr_accessible :when, :howlong, :check
+   attr_accessible :when, :howlong, :check, :title, :start, :end, :allDay
 end

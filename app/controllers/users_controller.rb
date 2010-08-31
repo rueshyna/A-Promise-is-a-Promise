@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticate, :only => [:edit, :update, :show, :index]
-  before_filter :correct_user, :only => [:edit, :update, :show]
+  before_filter :correct_user, :only => [:edit, :update, :show, :index]
 
   def index
     @title = "All users"
