@@ -22,10 +22,6 @@
     <div>
     <% if signed_in? %>
       <%= render 'layouts/header'%>
-      <div class='column'>
-        <%= render 'layouts/left'%>
-        <%= render 'layouts/right'%>
-      </div>
       <div class = 'content'>
         <% flash.each do |key, value| %>
            <div class = '<%= key %>'><%= value %></div>
@@ -47,5 +43,3 @@
     </div>
   </body>
 </html>
-
-

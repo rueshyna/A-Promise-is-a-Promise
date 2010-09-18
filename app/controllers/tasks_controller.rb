@@ -17,13 +17,26 @@ class TasksController < ApplicationController
     @promise = current_user.promise.build(:title => params[:title],:when => params[:when], :howlong => params[:howlong], :start => params[:start], :end => params[:end], :allDay => params[:allDay])
     if @promise.save
       render :json => [@promise.id, @promise.title, @promise.start, @promise.end, @promise.allDay].to_json
-      #render :json => @promise.to_json(:methods=>:permalink, :only=> [:title, :start, :end, :allDay])
     end
   end
 
   def load_promise
-    @promise = current_user.promise.all.to_json(:only=>[:title, :start, :end, :allDay])
-    render  :json =>@promise
-    #render :json => [:id=>'11', :title=>'title',:start=>'2010-8-1',:end=>'2010-8-1',:allDay=>true ].to_json
+    @promise = current_user.promise.all.to_json(:only=>[:id, :title, :start, :end, :allDay])
+    render :json =>@promise
+  end
+
+  def promise_tips
+    @promise = current_user.promise.find(params[:id])
+    render :json => [@promise.title, @promise.when, @promise.howlong].to_json
+  end
+
+  def edit_promise
+    @promise =Promise.find(params[:id])
+    render :json => [@promise.title, @promise.when, @promise.howlong].to_json
+  end
+
+  def update_promise
+    @promise = Promise.find(params[:id]).update_attributes(:title =>params[:title], :when => params[:when], :howlong=> params[:howlong])
+    render :json => @promise.to_json
   end
 end

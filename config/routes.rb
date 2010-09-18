@@ -46,6 +46,9 @@ ActionController::Routing::Routes.draw do |map|
   map.communicate '/communicate', :controller => 'tasks', :action => 'communicate'
   map.dopromise '/dopromise', :controller => 'tasks', :action =>'do_promise'
   map.loadpromise '/loadpromise', :controller => 'tasks', :action =>'load_promise'
+  map.promisetips '/promisetips', :controller => 'tasks', :action =>'promise_tips'
+  map.editpromise '/editpromise', :controller => 'tasks', :action =>'edit_promise'
+  map.updatepromise '/updatepromise', :controller => 'tasks', :action =>'update_promise'
 
   # See how all your routes lay out with "rake routes"
 
