@@ -15,7 +15,7 @@
       A:link {color: #666666}
       A:visited {color: #666666}
       A:active {color: #CCCCCC}
-      A:hover {color: #CCCCCC}
+      A:hover {color: #CCCCCC}			
     </style>
   </head>
   <body>
@@ -26,9 +26,9 @@
         <% flash.each do |key, value| %>
            <div class = '<%= key %>'><%= value %></div>
         <% end %>
-          <div class = 'main'>
-            <%= yield %>
-          </div>
+        <div class = 'main'>
+          <%= yield %>
+        </div>
        </div>
        <%= render 'layouts/footer'%>
      <% else %>

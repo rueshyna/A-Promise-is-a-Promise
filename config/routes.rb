@@ -41,14 +41,12 @@ ActionController::Routing::Routes.draw do |map|
   map.show '/show', :controller => 'users', :action => 'show'
   map.signin  '/signin',  :controller => 'sessions', :action => 'new'
   map.signout '/signout', :controller => 'sessions', :action => 'destroy'
-  map.promise '/promise', :controller => 'tasks', :action => 'promise'
-  map.recoder '/recoder', :controller => 'tasks', :action => 'recoder'
-  map.communicate '/communicate', :controller => 'tasks', :action => 'communicate'
-  map.dopromise '/dopromise', :controller => 'tasks', :action =>'do_promise'
-  map.loadpromise '/loadpromise', :controller => 'tasks', :action =>'load_promise'
-  map.promisetips '/promisetips', :controller => 'tasks', :action =>'promise_tips'
-  map.editpromise '/editpromise', :controller => 'tasks', :action =>'edit_promise'
-  map.updatepromise '/updatepromise', :controller => 'tasks', :action =>'update_promise'
+  map.promise '/promise', :controller => 'pages', :action => 'promise'
+  map.load '/pload', :controller => 'pages', :action =>'load'
+  map.tips '/ptips', :controller => 'pages', :action =>'tips'
+  map.edit '/pedit', :controller => 'pages', :action =>'edit'
+  map.update '/pupdate', :controller => 'pages', :action =>'update'
+  map.destory '/pdestory', :controller => 'pages', :action =>'destory'
 
   # See how all your routes lay out with "rake routes"
 
