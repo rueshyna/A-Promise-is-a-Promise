@@ -13,10 +13,11 @@ ActiveRecord::Schema.define(:version => 20100830064335) do
 
   create_table "promises", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "question_id"
     t.string   "when"
     t.integer  "howlong"
-    t.boolean  "check"
+    t.string   "check"
+    t.string   "commits"
+    t.string   "evaluation"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title"

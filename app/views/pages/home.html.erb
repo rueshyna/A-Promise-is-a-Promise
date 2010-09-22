@@ -4,19 +4,24 @@
     <div>
       <form>
       <fieldset>
-        <p><label for="goal">Your Goal is...</label></p>
+        <p><label for="goal"><b>Your Goal is...</b></label></p>
         <p><input type="text" name="goal" id="goal" value="" class="text ui-widget-content ui-corner-all" /></p>
-        <p><label for="when">When?</label></p>
+        <p><label for="when"><b>When?</b></label></p>
         <p><input type="radio" name="when" class="when" value="Morning" class="text ui-widget-content ui-corner-all" />Morning
         <input type="radio" name="when" class="when" value="Afternoon" class="text ui-widget-content ui-corner-all" />Afternoon
         <input type="radio" name="when" class="when" value="Evening" class="text ui-widget-content ui-corner-all" />Evening</p>
-        <p><label for="howlong">How Long?</label></p>
+        <p><label for="howlong"><b>How Long?</b></label></p>
         <p><input type="text" name="howlong" id="howlong" value="" class="text ui-widget-content ui-corner-all" />Minutes</p>
       </fieldset>
       </form>
     </div>
     <h3><a href="#" style='font-size:14px;'>Check</a></h3>
-    <div></div>
+    <div><fieldset>
+      <input type="checkbox" name="check" id="check" value="OK" class="text ui-widget-content ui-corner-all"><b>Check</b>
+      <p><b>Commit</b></p>
+      <textarea name="commits" id="commits" cols=30 rows=6></textarea>
+      </fieldset>
+    </div>
   </div>
 </div>
 <div id='tips'></div>
@@ -31,6 +36,7 @@
     <div id='calendar'></div>
   </div>
   <div id="tabs-2">
+    <div id='calendars'></div>
   </div>
 </div>
 
@@ -42,7 +48,8 @@
   });
   var goal = $("#goal"),
       howlong = $("#howlong"),
-      allFields = $([]).add(goal).add(howlong);
+      commits = $("#commits")
+      allFields = $([]).add(goal).add(howlong).add(commits);
   $('#dialog').dialog({
     height: 550,
     width: 500,
@@ -54,7 +61,7 @@
   var calendar = $('#calendar').fullCalendar({
     theme:true,
     weekMode:'liquid',
-    height:100,
+    contentHeight: 350,
     header:{
       left: 'prev,next today',
       center: 'title',
@@ -77,7 +84,9 @@
                    "howlong" : howlong.val(),
                    "start" : start+"",
                    "end" : end+"",
-                   "allDay" : allDay
+                   "allDay" : allDay,
+                   "check" : $("input[name=check]:checked").val(),
+                   "commits" : commits.val()
                  },function(json){
                   calendar.fullCalendar('renderEvent',{
                     id:json[0],
@@ -94,6 +103,7 @@
            },
            close: function() {
              $("input[name=when]").attr("checked", false);
+             $("input[name=check]").attr("checked", false);
              allFields.val('').removeClass('ui-state-error');
            }
         });
@@ -107,43 +117,42 @@
         },function(json){
           $("#goal").val(json[0]);
           $("#howlong").val(json[2]);
-
-
-      $('#dialog').dialog({
-           title: 'Edit',
-           buttons: {
-             Cancel: function() {
-               $(this).dialog('close');
-             },
-             'Update': function(){
-               if (goal.val()){
-                 $.getJSON("/pupdate" , {
-                   "id": calEvent.id,
-                   "title" : goal.val(),
-                   "when" : $("input[name=when]:checked").val(),
-                   "howlong" : howlong.val(),
-                 },function(json){
-                 })
-                 calendar.fullCalendar('refetchEvents');
+          $("#commits").val(json[3]);
+          $('#dialog').dialog({
+               title: 'Edit',
+               buttons: {
+                 Cancel: function() {
+                   $(this).dialog('close');
+                 },
+                 'Update': function(){
+                   if (goal.val()){
+                     $.getJSON("/pupdate" , {
+                       "id": calEvent.id,
+                       "title" : goal.val(),
+                       "when" : $("input[name=when]:checked").val(),
+                       "howlong" : howlong.val(),
+                       "check" : $("input[name=check]:checked").val(),
+                       "commits" : commits.val()
+                     },function(json){
+                     })
+                     calendar.fullCalendar('refetchEvents');
+                   }
+                   $(this).dialog('close');
+                 },
+                 'Reomve': function(){
+                   $.getJSON("/pdestory" , {
+                     "id": calEvent.id,
+                   },function(json){
+                   })
+                   calendar.fullCalendar('removeEvents',calEvent.id);
+                   $(this).dialog('close');
+                 }
+               },
+               close: function() {
+                 allFields.val('').removeClass('ui-state-error');
                }
-               $(this).dialog('close');
-             },
-             'Reomve': function(){
-               $.getJSON("/pdestory" , {
-                 "id": calEvent.id,
-               },function(json){
-               })
-               calendar.fullCalendar('removeEvents',calEvent.id);
-               $(this).dialog('close');
-             }
-           },
-           close: function() {
-             allFields.val('').removeClass('ui-state-error');
-           }
-        });
-        $('#dialog').dialog('open');
-
-
+            });
+            $('#dialog').dialog('open');
         })
       },
       eventMouseover: function(calEvent, jsEvent, view){
@@ -153,13 +162,14 @@
           $("#tips").html(
              "<i>Your Goal is </i><b>" + json[0] + "</b><br/>" +
              "<i>When?</i> <b>" + json[1] + "</b><br/>" +
-             "<i>How Long?</i> <b>" + json[2] + "</b> <i>minutes</i><br/>"
+             "<i>How Long?</i> <b>" + json[2] + "</b> <i>minutes</i><br/>"+
+             "<i>-------------------------------</i><br/><b>"+ json[3]+"</br>"
            );
           $("#tips").dialog({
             title : "Don't forget it...",
             position : [jsEvent.pageX-70, jsEvent.pageY-100],
             width : 370,
-            height : 130
+            height : 200
           })
           $("#tips").dialog('open');
         })

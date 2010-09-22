@@ -9,7 +9,7 @@ class CreateAddDataToPromises < ActiveRecord::Migration
   def self.down
     remove_column :promises, :title
     remove_column :promises, :start
+    remove_column :promises, :end
     remove_column :promises, :allDay
-    add_column :promises, :allDay
   end
 end
