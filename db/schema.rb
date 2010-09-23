@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(:version => 20100830064335) do
     t.integer  "user_id"
     t.string   "when"
     t.integer  "howlong"
-    t.string   "check"
     t.string   "commits"
     t.string   "evaluation"
     t.datetime "created_at"
@@ -24,16 +23,11 @@ ActiveRecord::Schema.define(:version => 20100830064335) do
     t.string   "start"
     t.string   "end"
     t.boolean  "allDay"
-  end
-
-  create_table "questions", :force => true do |t|
-    t.string   "question"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "className"
   end
 
   create_table "users", :force => true do |t|
-    t.integer  "school_id"
+    t.string   "student_id"
     t.string   "name"
     t.string   "email"
     t.datetime "created_at"
@@ -45,6 +39,6 @@ ActiveRecord::Schema.define(:version => 20100830064335) do
   end
 
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
-  add_index "users", ["school_id"], :name => "index_users_on_school_id", :unique => true
+  add_index "users", ["student_id"], :name => "index_users_on_student_id", :unique => true
 
 end

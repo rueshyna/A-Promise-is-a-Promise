@@ -7,7 +7,6 @@
 #  user_id    :integer
 #  when       :string(255)
 #  howlong    :integer
-#  check      :string(255)
 #  commits    :string(255)
 #  evaluation :string(255)
 #  created_at :datetime
@@ -16,8 +15,9 @@
 #  start      :string(255)
 #  end        :string(255)
 #  allDay     :boolean
+#  className  :string(255)
 #
 
 class Promise < ActiveRecord::Base
-   attr_accessible :when, :howlong, :check, :title, :start, :end, :allDay, :commits, :evaluation
+   attr_accessible :when, :howlong, :title, :start, :end, :allDay, :className, :commits, :evaluation
 end

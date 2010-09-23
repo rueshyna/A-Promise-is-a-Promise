@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20100821113158
+# Schema version: 20100830064335
 #
 # Table name: users
 #
 #  id                 :integer         not null, primary key
-#  school_id          :integer
+#  student_id         :string(255)
 #  name               :string(255)
 #  email              :string(255)
 #  created_at         :datetime
@@ -19,15 +19,15 @@ class User < ActiveRecord::Base
   EmailRegex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   attr_accessor :password
-  attr_accessible :school_id, :name, :email, :password, :password_confirmation
+  attr_accessible :student_id, :name, :email, :password, :password_confirmation
 
   has_many :promise
 
-  validates_presence_of :school_id, :name, :email
-  validates_length_of :school_id, :maximum => 10
+  validates_presence_of :student_id, :name, :email
+  validates_length_of :student_id, :maximum => 10
   validates_length_of :name, :maximum => 50
   validates_format_of :email, :with => EmailRegex
-  validates_uniqueness_of :school_id, :case_sensitive => false
+  validates_uniqueness_of :student_id, :case_sensitive => false
 
   # Automatically create the virtual attribute 'password_confirmation'.
   validates_confirmation_of :password
@@ -47,8 +47,8 @@ class User < ActiveRecord::Base
     save_without_validation
   end
 
-  def self.authenticate(school_id, submitted_password)
-    user = find_by_school_id(school_id)
+  def self.authenticate(student_id, submitted_password)
+    user = find_by_student_id(student_id)
     return nil  if user.nil?
     return user if user.has_password?(submitted_password)
   end

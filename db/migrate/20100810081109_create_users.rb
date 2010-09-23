@@ -1,7 +1,7 @@
 class CreateUsers < ActiveRecord::Migration
   def self.up
     create_table :users do |t|
-      t.integer :school_id
+      t.string :student_id
       t.string :name
       t.string :email
 

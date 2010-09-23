@@ -4,6 +4,7 @@ class CreateAddDataToPromises < ActiveRecord::Migration
     add_column :promises, :start, :string
     add_column :promises, :end, :string
     add_column :promises, :allDay, :boolean
+    add_column :promises, :className, :string
   end
 
   def self.down
@@ -11,5 +12,6 @@ class CreateAddDataToPromises < ActiveRecord::Migration
     remove_column :promises, :start
     remove_column :promises, :end
     remove_column :promises, :allDay
+    remove_column :promises, :className
   end
 end

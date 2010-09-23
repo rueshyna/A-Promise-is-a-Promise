@@ -1,3 +1,19 @@
+.fc .goal,
+.fc-agenda .goal .fc-event-time,
+.fc .goal a {
+  background-color: #0079ff;
+  border-color: #0079ff;
+  color: #fff;
+}
+
+.fc .finish,
+.fc-agenda .finish .fc-event-time,
+.fc .finish a {
+  background-color: #b1e700;
+  border-color: #b1e700;
+  color: #fff;
+}
+
 .main{
   margin: 10px;
   width: 98%;

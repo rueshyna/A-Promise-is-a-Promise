@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.authenticate(params[:session][:school_id],
+    user = User.authenticate(params[:session][:student_id],
                              params[:session][:password])
     if user.nil?
       flash.now[:error] = "Invalid student ID/password combination."

@@ -93,7 +93,8 @@
                     title: json[1],
                     start: json[2],
                     end: json[3],
-                    allDay: json[4]
+                    allDay: json[4],
+                    className: json[5]
                   },
                   false);
                 })
@@ -115,9 +116,19 @@
         $.getJSON("/pedit",{
           "id":calEvent.id
         },function(json){
-          $("#goal").val(json[0]);
-          $("#howlong").val(json[2]);
-          $("#commits").val(json[3]);
+          switch (json[1]){
+            case 'Morning' :
+              $('input[name=when]').get(0).checked = true;break;
+            case 'Afternoon' :
+              $('input[name=when]').get(1).checked = true;break;
+            case 'Evening' :
+              $('input[name=when]').get(2).checked = true;break;
+            default : break;
+          }
+
+          $('#goal').val(json[0]);
+          $('#howlong').val(json[2]);
+          $('#commits').val(json[3]);
           $('#dialog').dialog({
                title: 'Edit',
                buttons: {
@@ -149,6 +160,8 @@
                  }
                },
                close: function() {
+                 $("input[name=when]").attr("checked", false);
+                 $("input[name=check]").attr("checked", false);
                  allFields.val('').removeClass('ui-state-error');
                }
             });
@@ -167,7 +180,7 @@
            );
           $("#tips").dialog({
             title : "Don't forget it...",
-            position : [jsEvent.pageX-70, jsEvent.pageY-100],
+            position : [jsEvent.pageX, jsEvent.pageY],
             width : 370,
             height : 200
           })

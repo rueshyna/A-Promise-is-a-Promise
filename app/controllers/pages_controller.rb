@@ -7,17 +7,19 @@ class PagesController < ApplicationController
   def promise
     if params[:check].nil?
       @title = params[:title]
+      @className = "goal"
     else
       @title = params[:title] + " --" +params[:check]
+      @className = "finish"
     end
-    @promise = current_user.promise.build(:title => @title,:when => params[:when], :howlong => params[:howlong], :start => params[:start], :end => params[:end], :allDay => params[:allDay], :commits => params[:commits])
+    @promise = current_user.promise.build(:title => @title, :when => params[:when], :howlong => params[:howlong], :start => params[:start], :end => params[:end], :allDay => params[:allDay], :commits => params[:commits], :className => @className)
     if @promise.save
-      render :json => [@promise.id, @promise.title, @promise.start, @promise.end, @promise.allDay].to_json
+      render :json => [@promise.id, @promise.title, @promise.start, @promise.end, @promise.allDay, @promise.className].to_json
     end
   end
 
   def load
-    @promise = current_user.promise.all.to_json(:only=>[:id, :title, :start, :end, :allDay])
+    @promise = current_user.promise.all.to_json(:only=>[:id, :title, :start, :end, :allDay, :className])
     render :json =>@promise
   end
 
@@ -34,10 +36,12 @@ class PagesController < ApplicationController
   def update
     if params[:check].nil?
       @title = params[:title]
+      @css = "goal"
     else
       @title = params[:title] + " --" +params[:check]
+      @css = "finish"
     end
-    @promise = Promise.find(params[:id]).update_attributes(:title =>@title, :when => params[:when], :howlong=> params[:howlong])
+    @promise = Promise.find(params[:id]).update_attributes(:title =>@title, :when => params[:when], :howlong=> params[:howlong], :className => @css)
     render :json => @promise.to_json
   end
 
