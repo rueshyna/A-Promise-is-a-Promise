@@ -15,11 +15,18 @@
       </fieldset>
       </form>
     </div>
-    <h3><a href="#" style='font-size:14px;'>Check</a></h3>
+    <h3><a href="#" style='font-size:14px;'>Reflectim</a></h3>
     <div><fieldset>
-      <input type="checkbox" name="check" id="check" value="OK" class="text ui-widget-content ui-corner-all"><b>Check</b>
-      <p><b>Commit</b></p>
-      <textarea name="commits" id="commits" cols=30 rows=6></textarea>
+      <p><label for="score"><b>How well did I achieve my good?</b></label></p>
+      <p><input type="radio" name="score" class="score" value="1" class="text ui-widget-content ui-corner-all" />1(20%)
+        <input type="radio" name="score" class="score" value="2" class="text ui-widget-content ui-corner-all" />2(40%)
+        <input type="radio" name="score" class="score" value="3" class="text ui-widget-content ui-corner-all" />3(60%)
+        <input type="radio" name="score" class="score" value="4" class="text ui-widget-content ui-corner-all" />4(80%)
+        <input type="radio" name="score" class="score" value="5" class="text ui-widget-content ui-corner-all" />5(100%)</p>
+      <p><b>What happened? Why couldn't I achieve the goal?</b></p>
+      <textarea name="happen" id="happen" cols=30 rows=2></textarea>
+      <p><b>Possible Improvements</b></p>
+      <textarea name="improvement" id="improvement" cols=30 rows=2></textarea>
       </fieldset>
     </div>
   </div>
@@ -48,11 +55,12 @@
   });
   var goal = $("#goal"),
       howlong = $("#howlong"),
-      commits = $("#commits")
-      allFields = $([]).add(goal).add(howlong).add(commits);
+      happen = $("#happen")
+      improvement = $("#improvement")
+      allFields = $([]).add(goal).add(howlong).add(happen).add(improvement);
   $('#dialog').dialog({
-    height: 550,
-    width: 500,
+    height: 570,
+    width: 600,
     modal: true,
     autoOpen: false
   });
@@ -85,8 +93,9 @@
                    "start" : start+"",
                    "end" : end+"",
                    "allDay" : allDay,
-                   "check" : $("input[name=check]:checked").val(),
-                   "commits" : commits.val()
+                   "score" : $("input[name=score]:checked").val(),
+                   "happen" : happen.val(),
+                   "improvement" : improvement.val()
                  },function(json){
                   calendar.fullCalendar('renderEvent',{
                     id:json[0],
@@ -104,7 +113,7 @@
            },
            close: function() {
              $("input[name=when]").attr("checked", false);
-             $("input[name=check]").attr("checked", false);
+             $("input[name=score]").attr("checked", false);
              allFields.val('').removeClass('ui-state-error');
            }
         });
@@ -125,10 +134,24 @@
               $('input[name=when]').get(2).checked = true;break;
             default : break;
           }
-
           $('#goal').val(json[0]);
           $('#howlong').val(json[2]);
-          $('#commits').val(json[3]);
+          $('#happen').val(json[4]);
+          $('#improvement').val(json[5]);
+          switch(json[3]){
+            case '1' :
+              $('input[name=score]').get(0).checked = true;break;
+            case '2' :
+              $('input[name=score]').get(1).checked = true;break;
+            case '3' :
+              $('input[name=score]').get(2).checked = true;break;
+            case '4' :
+              $('input[name=score]').get(3).checked = true;break;
+            case '5' :
+              $('input[name=score]').get(4).checked = true;break;
+            default : break;
+          }
+
           $('#dialog').dialog({
                title: 'Edit',
                buttons: {
@@ -142,8 +165,9 @@
                        "title" : goal.val(),
                        "when" : $("input[name=when]:checked").val(),
                        "howlong" : howlong.val(),
-                       "check" : $("input[name=check]:checked").val(),
-                       "commits" : commits.val()
+                       "score" : $("input[name=score]:checked").val(),
+                       "happen" : happen.val(),
+                       "improvement" : improvement.val()
                      },function(json){
                      })
                      calendar.fullCalendar('refetchEvents');
@@ -161,7 +185,7 @@
                },
                close: function() {
                  $("input[name=when]").attr("checked", false);
-                 $("input[name=check]").attr("checked", false);
+                 $("input[name=score]").attr("checked", false);
                  allFields.val('').removeClass('ui-state-error');
                }
             });
@@ -176,13 +200,16 @@
              "<i>Your Goal is </i><b>" + json[0] + "</b><br/>" +
              "<i>When?</i> <b>" + json[1] + "</b><br/>" +
              "<i>How Long?</i> <b>" + json[2] + "</b> <i>minutes</i><br/>"+
-             "<i>-------------------------------</i><br/><b>"+ json[3]+"</br>"
+             "<i>-------------------------------</i><br/>"+
+             "<i>You achieved your good </i> "+ json[3]+" ( "+json[3]*20 +"% )<br/>"+
+             "<i>What happened?</i><b> "+json[4]+"</b><br/>"+
+             "<i>Possible improvements</i><b> "+json[5]+"</b><br/>"
            );
           $("#tips").dialog({
             title : "Don't forget it...",
             position : [jsEvent.pageX, jsEvent.pageY],
             width : 370,
-            height : 200
+            height : 250
           })
           $("#tips").dialog('open');
         })

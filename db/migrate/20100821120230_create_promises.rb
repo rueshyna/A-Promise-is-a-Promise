@@ -4,7 +4,9 @@ class CreatePromises < ActiveRecord::Migration
       t.integer :user_id
       t.string :when
       t.integer :howlong
-      t.string :commits
+      t.string :score
+      t.string :happen
+      t.string :improvement
       t.string :evaluation
 
       t.timestamps

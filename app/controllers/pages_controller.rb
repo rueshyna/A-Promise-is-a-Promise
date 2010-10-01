@@ -5,14 +5,14 @@ class PagesController < ApplicationController
   end
 
   def promise
-    if params[:check].nil?
+    if params[:score].nil?
       @title = params[:title]
       @className = "goal"
     else
-      @title = params[:title] + " --" +params[:check]
+      @title = params[:title] + " --OK"
       @className = "finish"
     end
-    @promise = current_user.promise.build(:title => @title, :when => params[:when], :howlong => params[:howlong], :start => params[:start], :end => params[:end], :allDay => params[:allDay], :commits => params[:commits], :className => @className)
+    @promise = current_user.promise.build(:title => @title, :when => params[:when], :howlong => params[:howlong], :start => params[:start], :end => params[:end], :allDay => params[:allDay], :score => params[:score], :happen => params[:happen],:improvement => params[:improvement], :className => @className)
     if @promise.save
       render :json => [@promise.id, @promise.title, @promise.start, @promise.end, @promise.allDay, @promise.className].to_json
     end
@@ -25,23 +25,23 @@ class PagesController < ApplicationController
 
   def tips
     @promise = current_user.promise.find(params[:id])
-    render :json => [@promise.title, @promise.when, @promise.howlong, @promise.commits].to_json
+    render :json => [@promise.title, @promise.when, @promise.howlong, @promise.score, @promise.happen, @promise.improvement].to_json
   end
 
   def edit
     @promise =Promise.find(params[:id])
-    render :json => [@promise.title.chomp(" --OK"), @promise.when, @promise.howlong, @promise.commits].to_json
+    render :json => [@promise.title.chomp(" --OK"), @promise.when, @promise.howlong, @promise.score, @promise.happen, @promise.improvement].to_json
   end
 
   def update
-    if params[:check].nil?
+    if params[:score].nil?
       @title = params[:title]
       @css = "goal"
     else
-      @title = params[:title] + " --" +params[:check]
+      @title = params[:title] + " --OK"
       @css = "finish"
     end
-    @promise = Promise.find(params[:id]).update_attributes(:title =>@title, :when => params[:when], :howlong=> params[:howlong], :className => @css)
+    @promise = Promise.find(params[:id]).update_attributes(:title =>@title, :when => params[:when], :howlong=> params[:howlong], :score => params[:score], :happen => params[:happen],:improvement => params[:improvement], :className => @css)
     render :json => @promise.to_json
   end
 

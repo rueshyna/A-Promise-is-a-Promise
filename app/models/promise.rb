@@ -19,5 +19,5 @@
 #
 
 class Promise < ActiveRecord::Base
-   attr_accessible :when, :howlong, :title, :start, :end, :allDay, :className, :commits, :evaluation
+   attr_accessible :when, :howlong, :title, :start, :end, :allDay, :className, :score, :happen, :improvement, :evaluation
 end
