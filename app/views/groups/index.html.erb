@@ -1,0 +1,6 @@
+<% @groups.each do |g| %>
+   <%=h g.group%>
+   <%=h User.find(g.user_id).name%>
+   <%= link_to "add group", group_path(g.id)%></br>
+<% end %>
+<%= link_to "new group", gnew_path %>

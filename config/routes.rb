@@ -36,17 +36,21 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :sessions, :only => [:new, :create, :destroy]
   map.resources :users
   map.resources :promises
+  map.resources :groups
   map.root :controller => 'pages', :action=>'home'
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.show '/show', :controller => 'users', :action => 'show'
   map.signin  '/signin',  :controller => 'sessions', :action => 'new'
   map.signout '/signout', :controller => 'sessions', :action => 'destroy'
   map.promise '/promise', :controller => 'pages', :action => 'promise'
-  map.load '/pload', :controller => 'pages', :action =>'load'
-  map.tips '/ptips', :controller => 'pages', :action =>'tips'
-  map.edit '/pedit', :controller => 'pages', :action =>'edit'
-  map.update '/pupdate', :controller => 'pages', :action =>'update'
-  map.destory '/pdestory', :controller => 'pages', :action =>'destory'
+  map.pload '/pload', :controller => 'pages', :action =>'load'
+  map.ptips '/ptips', :controller => 'pages', :action =>'tips'
+  map.pedit '/pedit', :controller => 'pages', :action =>'edit'
+  map.pupdate '/pupdate', :controller => 'pages', :action =>'update'
+  map.pdestory '/pdestory', :controller => 'pages', :action =>'destory'
+  map.gnew '/gnew', :controller => 'groups', :action =>'new'
+  map.gshow '/gshow', :controller => 'groups', :action => 'show'
+  map.gindex '/gindex', :controller => 'groups', :action =>'index'
 
   # See how all your routes lay out with "rake routes"
 

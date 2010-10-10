@@ -21,7 +21,9 @@ class User < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :student_id, :name, :email, :password, :password_confirmation
 
-  has_many :promise
+  has_many :promise, :dependent => :destroy
+  has_many :group
+  has_many :relationship
 
   validates_presence_of :student_id, :name, :email
   validates_length_of :student_id, :maximum => 10

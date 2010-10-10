@@ -1,0 +1,7 @@
+<h1>new Groups</h1>
+
+<% form_for (@group) do |f| %>
+  <%= f.label :group, "Group name"%>
+  <%= f.text_field :group%>
+  <%= f.submit "New Group" %>
+<% end %>

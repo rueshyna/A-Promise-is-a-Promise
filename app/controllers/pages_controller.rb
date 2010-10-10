@@ -1,7 +1,11 @@
 class PagesController < ApplicationController
-  before_filter :authenticate
+  before_filter :authenticate, :except => [:home]
   def home
-    @title="Home"
+    if signed_in?
+      @title="Home"
+    else
+      redirect_to signin_path
+    end
   end
 
   def promise
