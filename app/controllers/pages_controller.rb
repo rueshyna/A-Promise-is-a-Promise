@@ -3,6 +3,7 @@ class PagesController < ApplicationController
   def home
     if signed_in?
       @title="Home"
+      @partner = Relationship.find_all_by_group_id(Relationship.find_by_user_id(current_user).group_id)
     else
       redirect_to signin_path
     end
@@ -28,7 +29,7 @@ class PagesController < ApplicationController
   end
 
   def tips
-    @promise = current_user.promise.find(params[:id])
+    @promise = Promise.find(params[:id])
     render :json => [@promise.title, @promise.when, @promise.howlong, @promise.score, @promise.happen, @promise.improvement].to_json
   end
 
@@ -52,5 +53,10 @@ class PagesController < ApplicationController
   def destory
     @promise = Promise.find(params[:id]).destroy
     render :json => @promise.to_json
+  end
+
+  def pevent
+    @partner = Promise.find_all_by_user_id(params[:id])
+    render :json =>@partner.to_json(:only=>[:id, :title, :start, :end, :allDay, :className])
   end
 end

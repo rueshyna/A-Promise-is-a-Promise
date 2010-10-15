@@ -18,5 +18,6 @@ class Group < ActiveRecord::Base
   validates_presence_of :group
   validates_length_of :group , :maximum => 50
   validates_uniqueness_of :group, :case_sensitive => false
+  validates_uniqueness_of :user_id
 
 end

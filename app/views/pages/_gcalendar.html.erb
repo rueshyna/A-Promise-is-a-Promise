@@ -1,0 +1,51 @@
+function calendar(){
+  var gcalendar = $('#gcalendar').fullCalendar({
+    theme:true,
+    weekMode:'liquid',
+    contentHeight: 350,
+    header:{
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay'
+    },
+    selectHelper: true,
+    events:"/pages/pevent/"+$("input[name=user]:checked").val(),
+    eventClick: function(calEvent, jsEvent, view){
+    },
+    eventMouseover: function(calEvent, jsEvent, view){
+        $.getJSON("/ptips",{
+          "id":calEvent.id
+        },function(json){
+          $("#tips").html(
+             "<i>Your Goal is </i><b>" + json[0] + "</b><br/>" +
+             "<i>When?</i> <b>" + json[1] + "</b><br/>" +
+             "<i>How Long?</i> <b>" + json[2] + "</b> <i>minutes</i><br/>"+
+             "<i>-------------------------------</i><br/>"+
+             "<i>You achieved your good </i> "+ json[3]+" ( "+json[3]*20 +"% )<br/>"+
+             "<i>What happened?</i><b> "+json[4]+"</b><br/>"+
+             "<i>Possible improvements</i><b> "+json[5]+"</b><br/>"
+           );
+          $("#tips").dialog({
+            title : "Don't forget it...",
+            position : [jsEvent.pageX, jsEvent.pageY],
+            width : 370,
+            height : 250
+          })
+          $("#tips").dialog('open');
+        })
+      },
+      eventMouseout: function(calEvent, jsEvent, view){
+        $("#tips").dialog('close')
+      }
+    }
+  );
+}
+calendar();
+  gcalendar.fullCalendar('addEventSource',
+    $('input[name=user]').bind('click',
+      function(){
+        $("#gcalendar").empty();
+        calendar();
+      }
+    )
+  )

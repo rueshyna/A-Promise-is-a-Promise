@@ -270,7 +270,20 @@ h2{
   font-weight: bold;
 }
 
-#calendar{
+#mycalendar{
   padding : 20px;
+  padding-top : 10px;
+}
+
+#gcalendar{
+  width:90%;
+  padding : 10px;
+  padding-top : 10px;
+  margin : auto;
+}
+
+#partner{
+  width:90%;
+  padding : 10px;
   padding-top : 10px;
 }

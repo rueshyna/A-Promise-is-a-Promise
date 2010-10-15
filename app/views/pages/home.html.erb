@@ -1,54 +1,8 @@
-<div id='dialog' title="Do promise">
-  <div id="accordion">
-    <h3><a href="#" style='font-size:14px;'>Promise</a></h3>
-    <div>
-      <form>
-      <fieldset>
-        <p><label for="goal"><b>Your Goal is...</b></label></p>
-        <p><input type="text" name="goal" id="goal" value="" class="text ui-widget-content ui-corner-all" /></p>
-        <p><label for="when"><b>When?</b></label></p>
-        <p><input type="radio" name="when" class="when" value="Morning" class="text ui-widget-content ui-corner-all" />Morning
-        <input type="radio" name="when" class="when" value="Afternoon" class="text ui-widget-content ui-corner-all" />Afternoon
-        <input type="radio" name="when" class="when" value="Evening" class="text ui-widget-content ui-corner-all" />Evening</p>
-        <p><label for="howlong"><b>How Long?</b></label></p>
-        <p><input type="text" name="howlong" id="howlong" value="" class="text ui-widget-content ui-corner-all" />Minutes</p>
-      </fieldset>
-      </form>
-    </div>
-    <h3><a href="#" style='font-size:14px;'>Reflectim</a></h3>
-    <div><fieldset>
-      <p><label for="score"><b>How well did I achieve my good?</b></label></p>
-      <p><input type="radio" name="score" class="score" value="1" class="text ui-widget-content ui-corner-all" />1(20%)
-        <input type="radio" name="score" class="score" value="2" class="text ui-widget-content ui-corner-all" />2(40%)
-        <input type="radio" name="score" class="score" value="3" class="text ui-widget-content ui-corner-all" />3(60%)
-        <input type="radio" name="score" class="score" value="4" class="text ui-widget-content ui-corner-all" />4(80%)
-        <input type="radio" name="score" class="score" value="5" class="text ui-widget-content ui-corner-all" />5(100%)</p>
-      <p><b>What happened? Why couldn't I achieve the goal?</b></p>
-      <textarea name="happen" id="happen" cols=30 rows=2></textarea>
-      <p><b>Possible Improvements</b></p>
-      <textarea name="improvement" id="improvement" cols=30 rows=2></textarea>
-      </fieldset>
-    </div>
-  </div>
-</div>
-<div id='tips'></div>
-
-<div id="tabs">
- <ul>
-   <li><a href="#tabs-1" style='font-size:14px;'>Do promise</a></li>
-   <li><a href="#tabs-2" style='font-size:14px;'>Partner's status</a></li>
- </ul>
-
-  <div id="tabs-1">
-    <div id='calendar'></div>
-  </div>
-  <div id="tabs-2">
-    <div id='calendars'></div>
-  </div>
-</div>
+<%= render 'pages/mydialog' %>
+<%= render 'pages/tip' %>
+<%= render 'pages/tabs' %>
 
 <% content_for :js_ready do %>
-  $("#tabs").tabs();
   $("#accordion").accordion({
    active: false,
    collapsible: true
@@ -66,156 +20,13 @@
   });
   $('#tips').dialog({autoOpen: false});
 
-  var calendar = $('#calendar').fullCalendar({
-    theme:true,
-    weekMode:'liquid',
-    contentHeight: 350,
-    header:{
-      left: 'prev,next today',
-      center: 'title',
-      right: 'month,agendaWeek,agendaDay'
-    },
-    selectable: true,
-    selectHelper: true,
-    select:
-      function(start, end, allDay){
-        $('#dialog').dialog({
-           buttons: {
-             Cancel: function() {
-               $(this).dialog('close');
-             },
-             'OK': function(){
-               if (goal.val()){
-                 $.getJSON("/promise" , {
-                   "title" : goal.val(),
-                   "when" : $("input[name=when]:checked").val(),
-                   "howlong" : howlong.val(),
-                   "start" : start+"",
-                   "end" : end+"",
-                   "allDay" : allDay,
-                   "score" : $("input[name=score]:checked").val(),
-                   "happen" : happen.val(),
-                   "improvement" : improvement.val()
-                 },function(json){
-                  calendar.fullCalendar('renderEvent',{
-                    id:json[0],
-                    title: json[1],
-                    start: json[2],
-                    end: json[3],
-                    allDay: json[4],
-                    className: json[5]
-                  },
-                  false);
-                })
-               }
-               $(this).dialog('close');
-             }
-           },
-           close: function() {
-             $("input[name=when]").attr("checked", false);
-             $("input[name=score]").attr("checked", false);
-             allFields.val('').removeClass('ui-state-error');
-           }
-        });
-        $('#dialog').dialog('open');
-        calendar.fullCalendar('unselect');
-      },
-      events:"/pload",
-      eventClick: function(calEvent, jsEvent, view){
-        $.getJSON("/pedit",{
-          "id":calEvent.id
-        },function(json){
-          switch (json[1]){
-            case 'Morning' :
-              $('input[name=when]').get(0).checked = true;break;
-            case 'Afternoon' :
-              $('input[name=when]').get(1).checked = true;break;
-            case 'Evening' :
-              $('input[name=when]').get(2).checked = true;break;
-            default : break;
-          }
-          $('#goal').val(json[0]);
-          $('#howlong').val(json[2]);
-          $('#happen').val(json[4]);
-          $('#improvement').val(json[5]);
-          switch(json[3]){
-            case '1' :
-              $('input[name=score]').get(0).checked = true;break;
-            case '2' :
-              $('input[name=score]').get(1).checked = true;break;
-            case '3' :
-              $('input[name=score]').get(2).checked = true;break;
-            case '4' :
-              $('input[name=score]').get(3).checked = true;break;
-            case '5' :
-              $('input[name=score]').get(4).checked = true;break;
-            default : break;
-          }
-
-          $('#dialog').dialog({
-               title: 'Edit',
-               buttons: {
-                 Cancel: function() {
-                   $(this).dialog('close');
-                 },
-                 'Update': function(){
-                   if (goal.val()){
-                     $.getJSON("/pupdate" , {
-                       "id": calEvent.id,
-                       "title" : goal.val(),
-                       "when" : $("input[name=when]:checked").val(),
-                       "howlong" : howlong.val(),
-                       "score" : $("input[name=score]:checked").val(),
-                       "happen" : happen.val(),
-                       "improvement" : improvement.val()
-                     },function(json){
-                     })
-                     calendar.fullCalendar('refetchEvents');
-                   }
-                   $(this).dialog('close');
-                 },
-                 'Reomve': function(){
-                   $.getJSON("/pdestory" , {
-                     "id": calEvent.id,
-                   },function(json){
-                   })
-                   calendar.fullCalendar('removeEvents',calEvent.id);
-                   $(this).dialog('close');
-                 }
-               },
-               close: function() {
-                 $("input[name=when]").attr("checked", false);
-                 $("input[name=score]").attr("checked", false);
-                 allFields.val('').removeClass('ui-state-error');
-               }
-            });
-            $('#dialog').dialog('open');
-        })
-      },
-      eventMouseover: function(calEvent, jsEvent, view){
-        $.getJSON("/ptips",{
-          "id":calEvent.id
-        },function(json){
-          $("#tips").html(
-             "<i>Your Goal is </i><b>" + json[0] + "</b><br/>" +
-             "<i>When?</i> <b>" + json[1] + "</b><br/>" +
-             "<i>How Long?</i> <b>" + json[2] + "</b> <i>minutes</i><br/>"+
-             "<i>-------------------------------</i><br/>"+
-             "<i>You achieved your good </i> "+ json[3]+" ( "+json[3]*20 +"% )<br/>"+
-             "<i>What happened?</i><b> "+json[4]+"</b><br/>"+
-             "<i>Possible improvements</i><b> "+json[5]+"</b><br/>"
-           );
-          $("#tips").dialog({
-            title : "Don't forget it...",
-            position : [jsEvent.pageX, jsEvent.pageY],
-            width : 370,
-            height : 250
-          })
-          $("#tips").dialog('open');
-        })
-      },
-      eventMouseout: function(calEvent, jsEvent, view){
-        $("#tips").dialog('close')
-      }
+  $('#tabs').tabs({
+    show: function(event, ui) {
+      $('#calendar').fullCalendar('render');
+      $('#gcalendar').fullCalendar('render');
+    }
   });
+  $('input[name=user]').get(1).checked = true;
+  <%= render 'pages/mycalendar' %>
+  <%= render 'pages/gcalendar' %>
 <% end %>
