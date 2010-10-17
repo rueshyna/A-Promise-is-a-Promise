@@ -30,7 +30,7 @@ class PagesController < ApplicationController
 
   def tips
     @promise = Promise.find(params[:id])
-    render :json => [@promise.title, @promise.when, @promise.howlong, @promise.score, @promise.happen, @promise.improvement].to_json
+    render :json => [@promise.title, @promise.when, @promise.howlong, @promise.score, @promise.happen, @promise.improvement,@promise.evaluation].to_json
   end
 
   def edit
@@ -57,6 +57,25 @@ class PagesController < ApplicationController
 
   def pevent
     @partner = Promise.find_all_by_user_id(params[:id])
-    render :json =>@partner.to_json(:only=>[:id, :title, :start, :end, :allDay, :className])
+    render :json => @partner.to_json(:only=>[:id, :title, :start, :end, :allDay, :className])
+  end
+
+  def pcomm
+    @promise = Promise.find(params[:id])
+    @name = User.find(@promise.user_id).name
+
+    if @promise.evaluation.nil?
+      @promise.update_attributes(:evaluation => "")
+    end
+
+    @evaluations = @promise.evaluation+ params[:evaluation]+" --<i>"+ @name +"</i><br/>"
+
+    @promise = @promise.update_attributes(:evaluation => @evaluations)
+    render :json => @promise.to_json
+  end
+
+  def cload
+    @promise = Promise.find(params[:id])
+    render :json => [@promise.evaluation].to_json
   end
 end

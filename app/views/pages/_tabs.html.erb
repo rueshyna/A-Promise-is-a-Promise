@@ -7,18 +7,17 @@
     <div id='mycalendar'></div>
   </div>
   <div id="tabs-2">
-    <div id="pcalendar">
       <table width='100%'>
-      <tbody>
-        <tr>
-          <td width='80%'><div id='gcalendar'></div></td>
-          <td><fieldset>
-              <% @partner.each do |p| %>
-                <p><input type="radio" name="user" class="user" value=<%=h p.user_id%> class="text ui-widget-content ui-corner-all" /><%=h User.find(p.user_id).name%></li>
-              <%end %>
-            </fieldset>
-            </div>
-          </td></tr></tbody></table>
-    </div>
+      <tbody><tr>
+        <td width='80%'><div id='gcalendar'></div></td>
+        <td><div id='partner'><fieldset>
+          <% @partner.each do |p| %>
+            <% if p.user_id!=current_user.id  %>
+              <input type="radio" name="user" class="user" value=<%=h p.user_id%> class="text ui-widget-content ui-corner-all" /><%=h User.find(p.user_id).name%><br/>
+            <% end %>
+          <% end %>
+         </fieldset></div></td>
+       </tr></tbody>
+       </table>
   </div>
 </div>

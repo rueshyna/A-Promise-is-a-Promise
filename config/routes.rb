@@ -51,6 +51,7 @@ ActionController::Routing::Routes.draw do |map|
   map.gnew '/gnew', :controller => 'groups', :action =>'new'
   map.gshow '/gshow', :controller => 'groups', :action => 'show'
   map.gindex '/gindex', :controller => 'groups', :action =>'index'
+  map.gdestroy '/gdestroy', :controller => 'groups', :action =>'destroy'
 
   # See how all your routes lay out with "rake routes"
 

@@ -287,3 +287,18 @@ h2{
   padding : 10px;
   padding-top : 10px;
 }
+
+#grouptable{
+  margin : auto;
+  width : 100%;
+  font-size : 16pt;
+
+}
+
+td{
+  padding :5px;
+}
+
+th{
+  padding :5px;
+}

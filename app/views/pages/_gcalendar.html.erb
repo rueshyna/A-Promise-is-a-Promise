@@ -11,6 +11,32 @@ function calendar(){
     selectHelper: true,
     events:"/pages/pevent/"+$("input[name=user]:checked").val(),
     eventClick: function(calEvent, jsEvent, view){
+      $.getJSON("/pages/cload",{
+        "id": calEvent.id
+      },function(json){
+         $('#evaluations').empty().append(json[0]);
+         $('#pdialog').dialog({
+           buttons:{
+             Cancel: function(){
+               $(this).dialog('close');
+             },
+             'OK': function(){
+               if(evaluation.val()){
+                 $.getJSON("/pages/pcomm",{
+                   "id": calEvent.id,
+                   "evaluation": evaluation.val()
+                 },function(json){
+                 })
+               }
+               $(this).dialog('close');
+             }
+           },
+           close: function() {
+             allFields.val('').removeClass('ui-state-error');
+           }
+         });
+         $('#pdialog').dialog('open');
+       })
     },
     eventMouseover: function(calEvent, jsEvent, view){
         $.getJSON("/ptips",{
@@ -41,7 +67,7 @@ function calendar(){
   );
 }
 calendar();
-  gcalendar.fullCalendar('addEventSource',
+  $("#gcalendar").fullCalendar('addEventSource',
     $('input[name=user]').bind('click',
       function(){
         $("#gcalendar").empty();

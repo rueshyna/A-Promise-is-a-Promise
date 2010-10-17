@@ -1,6 +1,45 @@
-<% @groups.each do |g| %>
-   <%=h g.group%>
-   <%=h User.find(g.user_id).name%>
-   <%= link_to "add group", group_path(g.id)%></br>
-<% end %>
-<%= link_to "new group", gnew_path %>
+<h1>Class</h1>
+<div id='grouptable'>
+  <table>
+    <tr>
+      <th>Class</th>
+      <th>Member</th>
+      <th> </th>
+    </tr>
+    <% @groups.each do |g| %>
+      <tr>
+        <td><%=h g.group%></td>
+        <td>
+          <% @users = Relationship.find_all_by_group_id(g.id) %>
+          <% @users.each do |u|%>
+            <%=h User.find(u.user_id).name %>,
+          <% end %>
+        </td>
+        <% @inGroup = false%>
+        <% @users.each do |u|%>
+          <% if u.user_id == current_user.id %>
+             <% @inGroup = true%>
+             <% break %>
+          <% end %>
+        <% end %>
+
+        <% if @inGroup %>
+          <td><%= link_to "leave class", group_path(g.id)%></td>
+        <% else %>
+          <td><%= link_to "add class", group_path(g.id)%></td>
+        <% end %>
+      </tr>
+    <% end %>
+    <tr>
+      <td></td>
+      <td></td>
+      <% @leader = Group.find_by_user_id(current_user.id)%>
+      <% if @leader.nil? && !@inGroup%>
+        <td><%= link_to "new class", gnew_path %></td>
+      <% end %>
+      <% if !@leader.nil? %>
+        <td><%= link_to "remove class", gdestroy_path %></td>
+      <% end %>
+    </tr>
+  </table>
+</div>
