@@ -3,7 +3,9 @@ class PagesController < ApplicationController
   def home
     if signed_in?
       @title="Home"
-      @partner = Relationship.find_all_by_group_id(Relationship.find_by_user_id(current_user).group_id)
+      if !Relationship.find_by_user_id(current_user.id).nil?
+        @partner = Relationship.find_all_by_group_id(Relationship.find_by_user_id(current_user).group_id)
+      end
     else
       redirect_to signin_path
     end

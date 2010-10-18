@@ -24,9 +24,9 @@
         <% end %>
 
         <% if @inGroup %>
-          <td><%= link_to "leave class", group_path(g.id)%></td>
+          <td><%= link_to "leave", group_path(g.id)%></td>
         <% else %>
-          <td><%= link_to "add class", group_path(g.id)%></td>
+          <td><%= link_to "add", group_path(g.id)%></td>
         <% end %>
       </tr>
     <% end %>

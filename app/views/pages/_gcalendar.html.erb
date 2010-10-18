@@ -43,19 +43,21 @@ function calendar(){
           "id":calEvent.id
         },function(json){
           $("#tips").html(
-             "<i>Your Goal is </i><b>" + json[0] + "</b><br/>" +
+             "<i>Goal is </i><b>" + json[0] + "</b><br/>" +
              "<i>When?</i> <b>" + json[1] + "</b><br/>" +
              "<i>How Long?</i> <b>" + json[2] + "</b> <i>minutes</i><br/>"+
-             "<i>-------------------------------</i><br/>"+
+             "<i>= Reflective ===================</i><br/>"+
              "<i>You achieved your good </i> "+ json[3]+" ( "+json[3]*20 +"% )<br/>"+
              "<i>What happened?</i><b> "+json[4]+"</b><br/>"+
-             "<i>Possible improvements</i><b> "+json[5]+"</b><br/>"
+             "<i>Possible improvements</i><b> "+json[5]+"</b><br/>"+
+             "<i>= Common ===================</i><br/>"+
+             json[6]
            );
           $("#tips").dialog({
             title : "Don't forget it...",
             position : [jsEvent.pageX, jsEvent.pageY],
             width : 370,
-            height : 250
+            height : 350
           })
           $("#tips").dialog('open');
         })

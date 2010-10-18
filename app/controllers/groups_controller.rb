@@ -12,19 +12,23 @@ class GroupsController < ApplicationController
 
     if !@who.nil? && @who.group_id == @group.id
       if @who.destroy
-        flash[:success] = "Leave Group Success!!!"
+        @check = Relationship.find_by_group_id(params[:id])
+        if @check.nil?
+          @group.destroy
+        end
+        flash[:success] = "Success!!!"
         redirect_to gindex_path
       else
-        flash[:error] = "Leave Group Fail!!!"
+        flash[:error] = "Fail!!!"
         redirect_to gindex_path
       end
     else
       @relationship = current_user.relationship.build(:group_id => @group.id)
         if @relationship.save
-          flash[:success] = "Add Group Success!!!"
+          flash[:success] = "Success!!!"
           redirect_to gindex_path
         else
-          flash[:error] = "Add Group Fail!!!"
+          flash[:error] = "Fail!!!"
           redirect_to gindex_path
         end
     end
@@ -42,10 +46,10 @@ class GroupsController < ApplicationController
     if @check.nil? && @group.save
       @relationship = current_user.relationship.build(:group_id => @group.id)
       @relationship.save
-      flash[:success] = "Group has been created and added to group"
+      flash[:success] = "Success!!!"
       redirect_to gindex_path
     else
-      flash[:error] = "You can't create group"
+      flash[:error] = "Fail!!!"
       redirect_to gindex_path
     end
   end
