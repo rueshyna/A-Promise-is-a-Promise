@@ -28,11 +28,13 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @title= "Edit user"
+    @user = User.find(params[:id])
   end
 
   # POST /users
   # POST /users.xml
   def create
+    #@user = User.create(params[:user])
     @user = User.new(params[:user])
     if @user.save
       sign_in @user

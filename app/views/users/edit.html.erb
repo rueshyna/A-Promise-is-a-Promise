@@ -1,7 +1,9 @@
 <h1>Editing user</h1>
 
 <div class='edit round'>
-  <% form_for(@user) do |f| %>
+  <% form_for (@user, :html => { :multipart => true })  do |f| %>
+     <%= image_tag @user.photo.url(:small) %>
+
     <%= f.error_messages %>
     <p>
       <%= f.label :name %><br />
@@ -20,7 +22,11 @@
       <%= f.password_field :password_confirmation %>
     </p>
     <p>
-      <%= f.submit 'Update' %>
+      <%= f.label :photo %><br />
+      <%= f.file_field :photo %>
+    </p>
+    <p>
+      <%= f.submit "Update" %>
     </p>
   <% end %>
 </div>

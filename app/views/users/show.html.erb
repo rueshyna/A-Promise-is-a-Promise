@@ -1,5 +1,6 @@
 <h1>Profile</h1>
   <div style="font-size:16pt">
+     <%= image_tag @user.photo.url(:small) %>
     <p>School ID: <%=h @user.student_id %></p>
     <p>Name:      <%=h @user.name %></p>
     <p>Email:     <%=h @user.email%></p>

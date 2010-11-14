@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20100830064335
+# Schema version: 20101114054811
 #
 # Table name: users
 #
@@ -13,17 +13,28 @@
 #  salt               :string(255)
 #  remember_token     :string(255)
 #  admin              :boolean
+#  photo_file_name    :string(255)
+#  photo_content_type :string(255)
+#  photo_file_size    :integer
+#  photo_updated_at   :datetime
 #
 
 class User < ActiveRecord::Base
   EmailRegex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   attr_accessor :password
-  attr_accessible :student_id, :name, :email, :password, :password_confirmation
-
+  attr_accessible :student_id, :name, :email, :password, :password_confirmation, :photo
   has_many :promise, :dependent => :destroy
   has_many :group
   has_many :relationship
+
+  has_attached_file :photo, :styles => { :small => "50x50>" },
+                    :url  => "/assets/photos/:id/:style/:basename.:extension",
+                    :path => ":rails_root/public/assets/photos/:id/:style/:basename.:extension"
+
+  validates_attachment_presence :photo
+  validates_attachment_size :photo, :less_than => 5.megabytes
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
 
   validates_presence_of :student_id, :name, :email
   validates_length_of :student_id, :maximum => 10

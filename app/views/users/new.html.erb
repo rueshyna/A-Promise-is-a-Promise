@@ -1,7 +1,7 @@
 <div class = 'sign_up_title round'>Sign up</div>
 
 <div class = 'sign_up round'>
-  <% form_for(@user) do |f| %>
+  <% form_for(@user, :html => { :multipart => true }) do |f| %>
     <%= f.error_messages%>
     <div>
        <%= f.label :student_id, "Student ID" %><br />
@@ -22,6 +22,10 @@
     <div>
       <%= f.label :password_confirmation, "Password Confirmation" %><br />
       <%= f.password_field :password_confirmation %>
+    </div>
+    <div>
+      <%= f.label :photo %><br />
+      <%= f.file_field :photo %>
     </div>
     <div>
       <%= f.submit "Sign up" %>
